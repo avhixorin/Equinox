@@ -1,8 +1,8 @@
-import { atricle } from "@/types/types";
+import { article } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FeedState {
-  feed: atricle[] | null;
+  feed: article[];
 }
 
 const initialState: FeedState = {
@@ -13,15 +13,14 @@ const feedSlice = createSlice({
   name: "feed",
   initialState,
   reducers: {
-    setFeed: (state, action: PayloadAction<atricle[]>) => {
+    setFeed: (state, action: PayloadAction<article[]>) => {
       state.feed = action.payload;
     },
-    addFeedItem: (state, action: PayloadAction<atricle>) => {
+    addFeedItem: (state, action: PayloadAction<article>) => {
       state.feed?.push(action.payload);
     },
     removeFeedItem: (state, action: PayloadAction<string>) => {
-      if (!state.feed) return;
-      state.feed = state.feed?.filter((item) => item.id !== action.payload);
+      state.feed = state.feed.filter((item) => item.id !== action.payload);
     },
   },
 });

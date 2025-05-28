@@ -3,7 +3,7 @@ import feedSlice from './feedSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: feedSlice,
+    feed: feedSlice,
   },
 });
 

@@ -23,15 +23,30 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "gizmodo.com",
+        hostname: "source.unsplash.com",
         port: "",
-        pathname: "/app/uploads/**",
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "images.theconversation.com",
+        hostname: "logo.clearbit.com",
         port: "",
-        pathname: "/files/**",
+        pathname: "/**",
+      },{
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },{
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },{
+        protocol: "https",
+        hostname: "logos-world.net",
+        port: "",
+        pathname: "/**",
       },
     ]
   }
