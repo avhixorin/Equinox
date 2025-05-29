@@ -14,6 +14,7 @@ const GET_NEWS = gql`
       shares
       image
       sources {
+        id
         name
         icon
         url
@@ -27,13 +28,16 @@ const GET_NEWS = gql`
 
 export const useInitialFeed = () => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useQuery(GET_NEWS);
+
+  const { data, loading, error, refetch } = useQuery(GET_NEWS, {
+    fetchPolicy: "no-cache",
+  });
 
   useEffect(() => {
-    if (data?.getInitialFeed) {
+    if (!loading && data?.getInitialFeed) {
       dispatch(setFeed(data.getInitialFeed));
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, loading]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 };

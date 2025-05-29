@@ -3,13 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useInitialFeed } from "@/hooks/useFetch";
 import { RootState } from "@/redux/store";
-import { Bell, Home, Search, Timer, User } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import {
+  ArrowLeft,
+  Bell,
+  Home,
+  Search,
+  Timer,
+  User,
+} from "lucide-react";
+import { useParams } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
-import Image from "next/image";
 
-const FullCoverage = () => {
+const Article = () => {
   const navLinks = [
     { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
     { name: "Search", icon: <Search className="w-4 h-4" />, href: "#" },
@@ -19,13 +25,16 @@ const FullCoverage = () => {
   const { loading } = useInitialFeed();
 
   const articles = useSelector((state: RootState) => state.feed.feed);
-  console.log("Articles:", articles);
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const viewingArticle = articles.find((article) => article.id === id);
+  const { parentId, articleId } = useParams();
+  console.log("Parent ID:", parentId);
+  const viewingArticle = articles.find((article) => article.id === parentId);
+  const sourceArticle = viewingArticle?.sources.find(
+    (source) => source.id === articleId
+  );
+  console.log("Viewing Article:", viewingArticle);
+  console.log("Source Article:", sourceArticle);
   return (
     <div className="min-h-screen pb-16">
-      {/* Mobile Bottom Nav */}
       <div className="md:hidden bg-white fixed bottom-0 left-0 w-full z-40 border-t">
         <div className="flex justify-around py-2">
           {navLinks.map((link) => (
@@ -40,13 +49,34 @@ const FullCoverage = () => {
           ))}
         </div>
       </div>
-
-      {/* Header */}
+      <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">
+        <div className="flex justify-evenly items-center py-2 w-full overflow-x-auto">
+          {viewingArticle?.sources.map((source) => (
+            <Button
+              key={source.id}
+              variant="ghost"
+              size="sm"
+              className="text-gray-600 cursor-pointer hover:text-gray-900 hover:bg-transparent"
+              onClick={() => (window.location.href = `${source.id}`)}
+            >
+              <img src={source?.icon} alt="" className="w-10 h-8" />
+            </Button>
+          ))}
+        </div>
+      </div>    
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12 md:h-16">
-            <div className="text-md md:text-2xl font-bold text-gray-800">
+            <div className="hidden md:block text-md md:text-2xl font-bold text-gray-800">
               <span className="text-gray-600">LOGO</span>
+            </div>
+            <div className="md:hidden text-md md:text-2xl font-bold text-gray-800">
+              <button onClick={() => window.history.back()}>
+                <ArrowLeft className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="md:hidden text-md md:text-2xl font-bold text-gray-800">
+              <img src={sourceArticle?.icon} alt="" className="w-32 h-8" />
             </div>
             <nav className="hidden md:flex space-x-8">
               <a
@@ -89,7 +119,8 @@ const FullCoverage = () => {
           </div>
         </div>
       </header>
-      <main className="max-w-7xl h-full mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
+
+      <main className="bg-white max-w-7xl h-full mx-auto px-4 sm:px-6 lg:px-8 max-sm:pt-14 pt-20 pb-8">
         {loading ? (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center">
             <h1 className="text-2xl font-bold text-gray-800">Loading...</h1>
@@ -97,38 +128,17 @@ const FullCoverage = () => {
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center gap-4">
             <div className="w-full flex justify-center items-center">
-              <h1 className="text-xl text-center md:text-3xl font-medium">{viewingArticle?.title}</h1>
+              <img src={viewingArticle?.image} alt="" className="rounded-md" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-              {viewingArticle?.sources.map((source, index) => (
-                <div
-                  key={index}
-                  className="flex rounded-md shadow-md overflow-hidden p-4 cursor-pointer"
-                >
-                  <div className="bg-white flex flex-col justify-between items-start w-[65%]">
-                    <img
-                      src={source?.icon || "/placeholder.png"}
-                      alt={source?.name}
-                      width={500}
-                      height={300}
-                      className="w-16 h-4 rounded-md object-cover"
-                    />
-                    <h3>{source?.newsHeadline || "No Title Available"}</h3>
-                    <p className="text-xs text-gray-500">
-                      {viewingArticle?.time}
-                    </p>
-                  </div>
-                  <div className="w-[35%]">
-                    <img
-                      src={viewingArticle?.image || "/placeholder.png"}
-                      alt="Article Image"
-                      width={500}
-                      height={300}
-                      className="w-full h-28 rounded-md object-cover"
-                    />
-                  </div>
-                </div>
-              ))}
+            <div className="w-full py-4">
+              <h2 className="text-xl md:text-3xl font-semibold text-gray-500 text-left italic">
+                {sourceArticle?.shortDescription}
+              </h2>
+            </div>
+            <div className="w-full">
+              <p className="text-xl md:text-2xl text-left">
+                {sourceArticle?.content}
+              </p>
             </div>
           </div>
         )}
@@ -137,4 +147,4 @@ const FullCoverage = () => {
   );
 };
 
-export default FullCoverage;
+export default Article;

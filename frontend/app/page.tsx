@@ -38,7 +38,7 @@ export default function HomePage() {
   ];
   const { loading } = useInitialFeed();
   const [filter, setFilter] = useState("All");
-const articles = useSelector((state: RootState) => state.feed.feed);
+  const articles = useSelector((state: RootState) => state.feed.feed);
 
   const filteredArticles: article[] =
     filter === "All"
@@ -47,7 +47,6 @@ const articles = useSelector((state: RootState) => state.feed.feed);
 
   return (
     <div className="min-h-screen bg-gray-100 pb-16">
-      {/* Mobile Bottom Nav */}
       <div className="md:hidden bg-white fixed bottom-0 left-0 w-full z-40 border-t">
         <div className="flex justify-around py-2">
           {navLinks.map((link) => (
@@ -63,7 +62,6 @@ const articles = useSelector((state: RootState) => state.feed.feed);
         </div>
       </div>
 
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12 md:h-16">
@@ -112,7 +110,6 @@ const articles = useSelector((state: RootState) => state.feed.feed);
         </div>
       </header>
 
-      {/* Category Filter */}
       <div className="mt-16 w-full">
         <div className="max-w-7xl flex justify-center mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-4 overflow-x-auto py-3 scrollbar-hidden">
@@ -199,17 +196,23 @@ const articles = useSelector((state: RootState) => state.feed.feed);
                 <div className="p-4">
                   <div className="flex flex-col items-center justify-between gap-4">
                     <div className="flex items-center space-x-2">
-                      {article.sources.map((source, index) => (
-                        <span
-                          key={index}
-                          className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded"
-                        >
-                          {source.name}
-                        </span>
-                      ))}
+                      {article.sources.map(
+                        (source, index) =>
+                          index < 3 && (
+                            <span
+                              key={index}
+                              className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded"
+                            >
+                              {source.name}
+                            </span>
+                          )
+                      )}
                     </div>
-                    <button className="text-blue-600 bg-gray-200 text-sm font-medium hover:underline px-4 py-2 rounded-md cursor-pointer"
-                    onClick={() => (window.location.href = `/full_coverage?id=${article.id}`)}
+                    <button
+                      className="text-blue-600 bg-gray-200 text-sm font-medium hover:underline px-4 py-2 rounded-md cursor-pointer"
+                      onClick={() =>
+                        (window.location.href = `/full_coverage/${article.id}`)
+                      }
                     >
                       📰 Full Coverage
                     </button>

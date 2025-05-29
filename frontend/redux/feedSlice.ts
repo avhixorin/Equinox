@@ -14,13 +14,22 @@ const feedSlice = createSlice({
   initialState,
   reducers: {
     setFeed: (state, action: PayloadAction<article[]>) => {
-      state.feed = action.payload;
+      return {
+        ...state,
+        feed: [...action.payload],
+      };
     },
     addFeedItem: (state, action: PayloadAction<article>) => {
-      state.feed?.push(action.payload);
+      return {
+        ...state,
+        feed: [...state.feed, action.payload],
+      };
     },
     removeFeedItem: (state, action: PayloadAction<string>) => {
-      state.feed = state.feed.filter((item) => item.id !== action.payload);
+      return {
+        ...state,
+        feed: state.feed.filter((item) => item.id !== action.payload),
+      };
     },
   },
 });
