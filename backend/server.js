@@ -749,12 +749,61 @@ const typeDefs = gql`
 
   type Query {
     getInitialFeed: [News!]!
+    getArticleById(id: ID!): News
+    getArticlesByCategory(category: String!): [News!]!
+    getSourcesByNewsId(newsId: ID!): [Source!]!
+    getSourceById(parentId: ID!, sourceId: ID!): Source
   }
 `;
 
 const resolvers = {
   Query: {
-    getInitialFeed: () => newsFeed,
+    getInitialFeed: () => {
+      return newsFeed.map((news) => ({
+        ...news,
+        sources: news.sources.map((source) => ({
+          id: source.id,
+          name: source.name
+        })),
+      }));
+    },
+    getArticleById: (_, { id }) => {
+      const article = newsFeed.find((news) => news.id === id);
+      if (!article) {
+        throw new Error("Article not found");
+      }
+      return article;
+    },
+    getArticlesByCategory: (_, { category }) => {
+      return newsFeed
+        .filter((news) => news.category.toLowerCase() === category.toLowerCase())
+        .map((news) => ({
+          ...news,
+          sources: news.sources.map((source) => ({
+            id: source.id,
+            name: source.name,
+          })),
+        }));
+    },
+    getSourcesByNewsId: (_, { newsId }) => {
+      const news = newsFeed.find((n) => n.id === newsId);
+      if (!news) {
+        throw new Error("News not found");
+      }
+      return news.sources;
+    },
+    getSourceById: (_, { parentId, sourceId }) => {
+      console.log("Fetching source with IDs:", parentId, sourceId);
+      const parent = newsFeed.find((news) => news.id === parentId);
+      if (!parent) {
+        throw new Error("Parent news not found");
+      }
+      const source = parent.sources.find((source) => source.id === sourceId);
+      if (!source) {
+        throw new Error("Source not found");
+      }
+      return source;
+    },
   },
 };
 

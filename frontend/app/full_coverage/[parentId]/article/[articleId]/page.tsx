@@ -1,36 +1,43 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useInitialFeed } from "@/hooks/useFetch";
+import { useFetch } from "@/hooks/useFetch";
 import { RootState } from "@/redux/store";
-import {
-  ArrowLeft,
-  Bell,
-  Home,
-  Search,
-  Timer,
-  User,
-} from "lucide-react";
+import { Source } from "@/types/types";
+import { ArrowLeft, Bell, Home, Search, Timer, User } from "lucide-react";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Article = () => {
+  const [loading, setLoading] = useState(true);
+  const [sourceArticle, setSourceArticle] = useState<Source | null>(null);
   const navLinks = [
     { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
     { name: "Search", icon: <Search className="w-4 h-4" />, href: "#" },
     { name: "Timeline", icon: <Timer className="w-4 h-4" />, href: "#" },
     { name: "Profile", icon: <User className="w-4 h-4" />, href: "/profile" },
   ];
-  const { loading } = useInitialFeed();
-
-  const articles = useSelector((state: RootState) => state.feed.feed);
+  const { fetchSourceById } = useFetch();
   const { parentId, articleId } = useParams();
   console.log("Parent ID:", parentId);
+  console.log("Article ID:", articleId);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (typeof parentId === "string") {
+        setLoading(true);
+        const { sourceById, loading } = await fetchSourceById(
+          parentId as string, articleId as string
+        );
+        setLoading(loading);
+        setSourceArticle(sourceById);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [articleId]);
+  const articles = useSelector((state: RootState) => state.feed.feed);
   const viewingArticle = articles.find((article) => article.id === parentId);
-  const sourceArticle = viewingArticle?.sources.find(
-    (source) => source.id === articleId
-  );
   console.log("Viewing Article:", viewingArticle);
   console.log("Source Article:", sourceArticle);
   return (
@@ -63,7 +70,7 @@ const Article = () => {
             </Button>
           ))}
         </div>
-      </div>    
+      </div>
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12 md:h-16">

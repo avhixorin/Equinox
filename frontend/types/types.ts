@@ -11,7 +11,7 @@ export type article = {
   image: string;
 };
 
-interface Source {
+export interface Source {
   id: string;
   name: string;
   icon: string;

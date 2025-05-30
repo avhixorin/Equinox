@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { useInitialFeed } from "@/hooks/useFetch";
+import { useEffect, useState } from "react";
+import { useFetch } from "@/hooks/useFetch";
 import { article } from "@/types/types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -36,9 +36,21 @@ export default function HomePage() {
     "Startup",
     "Business",
   ];
-  const { loading } = useInitialFeed();
   const [filter, setFilter] = useState("All");
+  const [loading, setLoading] = useState(true);
+
+  const { fetchInitialFeed } = useFetch();
   const articles = useSelector((state: RootState) => state.feed.feed);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { loading } = await fetchInitialFeed();
+      setLoading(loading);
+    };
+    fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setLoading]);
 
   const filteredArticles: article[] =
     filter === "All"

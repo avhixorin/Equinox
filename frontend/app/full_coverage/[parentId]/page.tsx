@@ -1,8 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useInitialFeed } from "@/hooks/useFetch";
+import { useFetch } from "@/hooks/useFetch";
 import { RootState } from "@/redux/store";
+import { article } from "@/types/types";
 import {
   ArrowLeft,
   Bell,
@@ -14,23 +15,35 @@ import {
   User,
 } from "lucide-react";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const FullCoverage = () => {
+  const [loading, setLoading] = useState(true);
+  const [viewingArticle, setViewingArticle] = useState<article | null>(null);
   const navLinks = [
     { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
     { name: "Search", icon: <Search className="w-4 h-4" />, href: "#" },
     { name: "Timeline", icon: <Timer className="w-4 h-4" />, href: "#" },
     { name: "Profile", icon: <User className="w-4 h-4" />, href: "/profile" },
   ];
-  const { loading } = useInitialFeed();
-
+  const { fetchArticleById } = useFetch();
+  const { parentId } = useParams();
   const articles = useSelector((state: RootState) => state.feed.feed);
   console.log("Articles in state:", articles);
-  const { parentId } = useParams();
   console.log("Parent ID:", parentId);
-  const viewingArticle = articles.find((article) => article.id === parentId);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (typeof parentId === "string") {
+        setLoading(true);
+        const { articleById, loading } = await fetchArticleById(parentId);
+        setLoading(loading);
+        setViewingArticle(articleById);
+      }
+    };
+    fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parentId]);
   console.log("Viewing Article:", viewingArticle);
   return (
     <div className="min-h-screen pb-16">
