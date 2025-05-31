@@ -47,7 +47,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white pb-16">
-
       <div className="mt-16 w-full">
         <div className="max-w-7xl flex justify-center mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-4 overflow-x-auto py-3 scrollbar-hidden">
@@ -67,7 +66,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
       <main className="max-w-6xl h-full mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {loading ? (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center">
