@@ -10,7 +10,7 @@ const Profile = () => {
           <div className="flex flex-col items-center justify-center bg-white shadow-md rounded-xl p-6">
             <div className="border-4 border-blue-500 rounded-full p-1 mb-4 shadow-sm">
               <img
-                src="https://randomuser.me/api/portraits/thumb/men/75.jpg"
+                src="https://randomuser.me/api/portraits/men/75.jpg"
                 alt="Profile"
                 className="w-28 h-28 rounded-full border-2 border-white object-cover"
               />
