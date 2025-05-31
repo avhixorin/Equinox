@@ -1,18 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useFetch } from "@/hooks/useFetch";
 import { RootState } from "@/redux/store";
 import { article } from "@/types/types";
 import {
-  ArrowLeft,
-  Bell,
   BookmarkIcon,
-  Home,
-  MessageSquare,
-  Search,
-  Timer,
-  User,
+  MessageSquare
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -21,12 +14,6 @@ import { useSelector } from "react-redux";
 const FullCoverage = () => {
   const [loading, setLoading] = useState(true);
   const [viewingArticle, setViewingArticle] = useState<article | null>(null);
-  const navLinks = [
-    { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
-    { name: "Search", icon: <Search className="w-4 h-4" />, href: "#" },
-    { name: "Timeline", icon: <Timer className="w-4 h-4" />, href: "#" },
-    { name: "Profile", icon: <User className="w-4 h-4" />, href: "/profile" },
-  ];
   const { fetchArticleById } = useFetch();
   const { parentId } = useParams();
   const articles = useSelector((state: RootState) => state.feed.feed);

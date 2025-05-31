@@ -1,10 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useFetch } from "@/hooks/useFetch";
 import { RootState } from "@/redux/store";
 import { Source } from "@/types/types";
-import { ArrowLeft, Bell, Home, Search, Timer, User } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -12,12 +10,6 @@ import { useSelector } from "react-redux";
 const Article = () => {
   const [loading, setLoading] = useState(true);
   const [sourceArticle, setSourceArticle] = useState<Source | null>(null);
-  const navLinks = [
-    { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
-    { name: "Search", icon: <Search className="w-4 h-4" />, href: "#" },
-    { name: "Timeline", icon: <Timer className="w-4 h-4" />, href: "#" },
-    { name: "Profile", icon: <User className="w-4 h-4" />, href: "/profile" },
-  ];
   const { fetchSourceById } = useFetch();
   const { parentId, articleId } = useParams();
   console.log("Parent ID:", parentId);
@@ -41,8 +33,7 @@ const Article = () => {
   console.log("Viewing Article:", viewingArticle);
   console.log("Source Article:", sourceArticle);
   return (
-    <div className="min-h-screen pb-16">
-
+    <div className="min-h-screen">
       <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">
         <div className="flex justify-evenly items-center py-2 w-full overflow-x-auto">
           {viewingArticle?.sources.map((source) => (
@@ -59,7 +50,7 @@ const Article = () => {
         </div>
       </div>
 
-      <main className="bg-white max-w-7xl h-full mx-auto px-4 sm:px-6 lg:px-8 max-sm:pt-14 pt-20 pb-8">
+      <main className="bg-white w-full h-full mx-auto px-4 sm:px-6 lg:px-8 max-sm:pt-14 pt-20 pb-8">
         {loading ? (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center">
             <h1 className="text-2xl font-bold text-gray-800">Loading...</h1>

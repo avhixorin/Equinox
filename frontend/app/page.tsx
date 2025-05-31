@@ -1,17 +1,11 @@
 "use client";
 import Image from "next/image";
 import {
-  Search,
-  User,
   MessageCircle,
   Share,
   Bookmark,
-  Home,
-  Timer,
-  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { article } from "@/types/types";
