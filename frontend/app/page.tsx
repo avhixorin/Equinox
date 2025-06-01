@@ -11,19 +11,10 @@ import { useFetch } from "@/hooks/useFetch";
 import { article } from "@/types/types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { categories } from "@/constants/constants";
 
 export default function HomePage() {
-  const categories = [
-    "All",
-    "Sports",
-    "Politics",
-    "Health",
-    "Science",
-    "Technology",
-    "Government",
-    "Startup",
-    "Business",
-  ];
+
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
 

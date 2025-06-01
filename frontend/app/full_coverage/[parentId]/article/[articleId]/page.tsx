@@ -12,8 +12,6 @@ const Article = () => {
   const [sourceArticle, setSourceArticle] = useState<Source | null>(null);
   const { fetchSourceById } = useFetch();
   const { parentId, articleId } = useParams();
-  console.log("Parent ID:", parentId);
-  console.log("Article ID:", articleId);
   useEffect(() => {
     const fetchData = async () => {
       if (typeof parentId === "string") {
@@ -30,8 +28,6 @@ const Article = () => {
   }, [articleId]);
   const articles = useSelector((state: RootState) => state.feed.feed);
   const viewingArticle = articles.find((article) => article.id === parentId);
-  console.log("Viewing Article:", viewingArticle);
-  console.log("Source Article:", sourceArticle);
   return (
     <div className="min-h-screen">
       <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">

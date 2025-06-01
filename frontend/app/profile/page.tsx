@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
 
@@ -8,7 +9,7 @@ const Profile = () => {
         <h1 className="text-3xl font-semibold text-gray-800 mb-6">Your Profile</h1>
         <div className="w-full max-w-md">
           <div className="flex flex-col items-center justify-center bg-white shadow-md rounded-xl p-6">
-            <div className="border-4 border-blue-500 rounded-full p-1 mb-4 shadow-sm">
+            <div className="border-4 border-blue-500 rounded-full p-1 mb-4 shadow-sm cursor-pointer">
               <img
                 src="https://randomuser.me/api/portraits/men/75.jpg"
                 alt="Profile"
@@ -18,8 +19,12 @@ const Profile = () => {
             <h2 className="text-xl font-medium text-gray-800 mb-4">Abhishek Bharti</h2>
 
             <div className="flex gap-4">
-              <Button className="rounded-full px-6 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">Settings</Button>
-              <Button className="rounded-full px-6 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">Bookmarks</Button>
+              <Button className="rounded-full px-6 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+              onClick={() => window.location.href = "/settings"}
+              >Settings</Button>
+              <Button className="rounded-full px-6 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+              onClick={() => window.location.href = "/bookmarks"}
+              >Bookmarks</Button>
             </div>
           </div>
 

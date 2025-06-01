@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useFetch } from "@/hooks/useFetch";
-import { RootState } from "@/redux/store";
 import { article } from "@/types/types";
 import {
   BookmarkIcon,
@@ -9,16 +8,13 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 const FullCoverage = () => {
   const [loading, setLoading] = useState(true);
   const [viewingArticle, setViewingArticle] = useState<article | null>(null);
   const { fetchArticleById } = useFetch();
   const { parentId } = useParams();
-  const articles = useSelector((state: RootState) => state.feed.feed);
-  console.log("Articles in state:", articles);
-  console.log("Parent ID:", parentId);
+
   useEffect(() => {
     const fetchData = async () => {
       if (typeof parentId === "string") {
@@ -31,7 +27,6 @@ const FullCoverage = () => {
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentId]);
-  console.log("Viewing Article:", viewingArticle);
   return (
     <div className="min-h-screen">
       <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">

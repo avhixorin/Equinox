@@ -1,22 +1,22 @@
 "use client";
-import { Bell, Home, Search, Timer, User } from "lucide-react";
-import React from "react";
+import { Bell, Search, User } from "lucide-react";
+import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { mobileNavLinks, navLinks } from "@/constants/constants";
 
 const Header = () => {
-  const mobileNavLinks = [
-    { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
-    { name: "Search", icon: <Search className="w-4 h-4" />, href: "#" },
-    { name: "Timeline", icon: <Timer className="w-4 h-4" />, href: "#" },
-    { name: "Profile", icon: <User className="w-4 h-4" />, href: "/profile" },
-  ];
-  const navLinks = [
-    { name: "Home", icon: <Home className="w-4 h-4" />, href: "#" },
-    { name: "Timeline", icon: <Timer className="w-4 h-4" />, href: "#" },
-    { name: "Contact Us", icon: <Search className="w-4 h-4" />, href: "#" },
-    { name: "About Us", icon: <User className="w-4 h-4" />, href: "/profile" },
-  ];
+  const [searchValue, setSearchValue] = useState("");
+  const path = usePathname();
+  const router = useRouter();
+
+  const handleSearchFocus = () => {
+    if (path !== "/search") {
+      router.push("/search");
+    }
+  };
+
   return (
     <div>
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
@@ -30,7 +30,7 @@ const Header = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-600 font-medium pb-1 "
+                  className="text-gray-600 font-medium pb-1 hover:text-blue-600 transition-colors"
                 >
                   <span className="ml-2">{link.name}</span>
                 </a>
@@ -43,15 +43,19 @@ const Header = () => {
                   type="text"
                   placeholder="Search"
                   className="pl-10 pr-4 py-2 w-64 rounded-full border-gray-300"
+                  autoFocus={path === "/search"}
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  onFocus={handleSearchFocus}
                 />
               </div>
               <Button
                 variant="ghost"
                 size="sm"
                 className="text-gray-600 cursor-pointer hover:text-gray-900"
-                onClick={() => (window.location.href = "/profile")}
+                onClick={() => router.push("/profile")}
               >
-                <User className="w-4 h-4 mr-2 scale-120" /> Profile
+                <User className="w-4 h-4 mr-2" /> Profile
               </Button>
             </div>
             <button className="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
@@ -60,6 +64,7 @@ const Header = () => {
           </div>
         </div>
       </header>
+
       <div className="md:hidden bg-white fixed bottom-0 left-0 w-full z-40 border-t">
         <div className="flex justify-around py-2">
           {mobileNavLinks.map((link) => (
