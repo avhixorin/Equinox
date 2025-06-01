@@ -1,20 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useFetch } from "@/hooks/useFetch";
+import { RootState } from "@/redux/store";
+import { addBookmark, removeBookmark } from "@/redux/userSlice";
 import { article } from "@/types/types";
-import {
-  BookmarkIcon,
-  MessageSquare
-} from "lucide-react";
+import { BookmarkIcon, MessageSquare } from "lucide-react";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const FullCoverage = () => {
   const [loading, setLoading] = useState(true);
   const [viewingArticle, setViewingArticle] = useState<article | null>(null);
   const { fetchArticleById } = useFetch();
   const { parentId } = useParams();
+  const dispatch = useDispatch();
+  const userBookmarks = useSelector(
+    (state: RootState) => state.user.user?.bookmarks
+  );
 
+  const bookmarkSet = useMemo(() => new Set(userBookmarks), [userBookmarks]);
   useEffect(() => {
     const fetchData = async () => {
       if (typeof parentId === "string") {
@@ -25,8 +31,19 @@ const FullCoverage = () => {
       }
     };
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentId]);
+  const handleBookmark = (articleId: string | undefined) => {
+    if (!articleId) return;
+
+    const isBookmarked = bookmarkSet.has(articleId);
+    if (isBookmarked) {
+      dispatch(removeBookmark(articleId));
+    } else {
+      dispatch(addBookmark(articleId));
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">
@@ -44,9 +61,15 @@ const FullCoverage = () => {
             variant="ghost"
             size="sm"
             className="text-gray-600 cursor-pointer hover:text-gray-900"
-            onClick={() => (window.location.href = "/search")}
+            onClick={() => handleBookmark(viewingArticle?.id)}
           >
-            <BookmarkIcon className="w-8 h-8 scale-125" />
+            <BookmarkIcon
+              className={`w-8 h-8 scale-125 transition-colors ${
+                viewingArticle?.id && bookmarkSet.has(viewingArticle.id)
+                  ? "text-blue-600 fill-blue-600"
+                  : "text-gray-600"
+              }`}
+            />
           </Button>
         </div>
       </div>

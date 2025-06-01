@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { mobileNavLinks, navLinks } from "@/constants/constants";
+import Link from "next/link";
 
 const Header = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -26,15 +27,23 @@ const Header = () => {
               <span className="text-gray-600">LOGO</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-600 font-medium pb-1 hover:text-blue-600 transition-colors"
-                >
-                  <span className="ml-2">{link.name}</span>
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = path === link.href;
+
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`pb-1 font-medium transition-colors ${
+                      isActive
+                        ? "text-blue-600 border-b-2 border-blue-600"
+                        : "text-gray-600 hover:text-blue-600"
+                    }`}
+                  >
+                    <span className="ml-2">{link.name}</span>
+                  </Link>
+                );
+              })}
             </nav>
             <div className="hidden md:flex items-center space-x-4">
               <div className="relative">
@@ -67,16 +76,21 @@ const Header = () => {
 
       <div className="md:hidden bg-white fixed bottom-0 left-0 w-full z-40 border-t">
         <div className="flex justify-around py-2">
-          {mobileNavLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="flex flex-col items-center text-gray-600 hover:text-blue-600"
-            >
-              {link.icon}
-              <span className="text-xs">{link.name}</span>
-            </a>
-          ))}
+          {mobileNavLinks.map((link) => {
+            const isActive = path === link.href;
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="flex flex-col items-center text-gray-600 hover:text-blue-600"
+              >
+                {isActive ? link.activeIcon : link.inActiveIcon}
+                <span className={`${isActive ? "text-[#1a60fb]" : ""} text-xs`}>
+                  {link.name}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

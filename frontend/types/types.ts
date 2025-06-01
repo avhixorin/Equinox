@@ -20,3 +20,13 @@ export interface Source {
   shortDescription: string;
   content: string
 }
+
+export type User = {
+  name: string;
+  email: string;
+  profilePicture: string;
+  bookmarks: string[];
+  settings: {
+    
+  }
+}
