@@ -1,4 +1,5 @@
 "use client";
+import ArticleCard from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
 import { useFetch } from "@/hooks/useFetch";
 import { RootState } from "@/redux/store";
@@ -43,7 +44,6 @@ const FullCoverage = () => {
       dispatch(addBookmark(articleId));
     }
   };
-
   return (
     <div className="min-h-screen">
       <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">
@@ -87,38 +87,14 @@ const FullCoverage = () => {
               </h1>
             </div>
             <div className=" grid grid-cols-1 md:grid-cols-2 gap-6">
-              {viewingArticle?.sources.map((source, index) => (
-                <div
-                  key={index}
-                  className="bg-white flex rounded-md shadow-md overflow-hidden p-4 cursor-pointer"
-                  role="button"
-                  onClick={() =>
-                    (window.location.href = `${viewingArticle.id}/article/${source.id}`)
-                  }
-                >
-                  <div className="bg-white flex flex-col justify-between items-start w-[65%]">
-                    <img
-                      src={source?.icon || "/placeholder.png"}
-                      alt={source?.name}
-                      width={500}
-                      height={300}
-                      className="w-16 h-4 rounded-md object-cover"
-                    />
-                    <h3>{source?.newsHeadline || "No Title Available"}</h3>
-                    <p className="text-xs text-gray-500">
-                      {viewingArticle?.time}
-                    </p>
-                  </div>
-                  <div className="w-[35%]">
-                    <img
-                      src={viewingArticle?.image || "/placeholder.png"}
-                      alt="Article Image"
-                      width={500}
-                      height={300}
-                      className="w-full h-28 rounded-md object-cover"
-                    />
-                  </div>
-                </div>
+              {viewingArticle?.sources.map((source) => (
+                <ArticleCard
+                  key={source.id}
+                  articleId={viewingArticle.id}
+                  source={source}
+                  time={viewingArticle.time}
+                  image={viewingArticle.image}
+                />
               ))}
             </div>
           </div>

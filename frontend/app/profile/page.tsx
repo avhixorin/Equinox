@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 const Profile = () => {
   return (
     <div className="h-full bg-gray-50 pb-16">
-      <main className="w-full h-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 flex flex-col items-center justify-start">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-6">Your Profile</h1>
+      <main className="w-full h-full mx-auto px-4 sm:px-6 lg:px-8 md:pt-24 pt-16 flex flex-col items-center justify-start">
+        <h1 className="hidden md:block text-3xl font-semibold text-gray-800 mb-6">Your Profile</h1>
         <div className="w-full max-w-md">
           <div className="flex flex-col items-center justify-center bg-white shadow-md rounded-xl p-6">
             <div className="border-4 border-blue-500 rounded-full p-1 mb-4 shadow-sm cursor-pointer">

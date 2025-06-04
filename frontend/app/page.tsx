@@ -1,20 +1,13 @@
 "use client";
-import Image from "next/image";
-import {
-  MessageCircle,
-  Share,
-  Bookmark,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { article } from "@/types/types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { categories } from "@/constants/constants";
+import NewsCard from "@/components/NewsCard";
 
 export default function HomePage() {
-
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +21,7 @@ export default function HomePage() {
       setLoading(loading);
     };
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setLoading]);
 
   const filteredArticles: article[] =
@@ -65,87 +58,8 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
             {filteredArticles.map((article) => (
-              <div
-                key={article.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
-              >
-                <div className="relative p-2 rounded-md">
-                  <Image
-                    src={article.image || "/placeholder.svg"}
-                    alt={article.title}
-                    width={400}
-                    height={300}
-                    className="w-full h-48 object-cover brightness-45 rounded-md"
-                  />
-                  <div className="absolute inset-0 text-white flex flex-col justify-between p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white px-2 py-1 rounded text-sm font-medium">
-                        {article.category}
-                      </span>
-                      <span className="text-white px-2 py-1 rounded text-sm">
-                        {article.time}
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <h3 className="text-lg font-semibold leading-tight">
-                        {article.title}
-                      </h3>
-                      <div className="flex items-center space-x-4 mt-2">
-                        <div
-                          className="flex items-center space-x-1 text-sm cursor-pointer hover:text-gray-300"
-                          role="button"
-                          onClick={() => alert("Comments clicked!")}
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                          <span>{article.views}</span>
-                        </div>
-                        <div
-                          className="flex items-center space-x-1 text-sm cursor-pointer hover:text-gray-300"
-                          role="button"
-                          onClick={() => alert("Share clicked!")}
-                        >
-                          <Share className="w-4 h-4" />
-                          <span>{article.shares}</span>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="cursor-pointer hover:bg-transparent hover:text-gray-300"
-                          onClick={() => alert("Bookmark added!")}
-                        >
-                          <Bookmark className="w-12 h-12 scale-120" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4">
-                  <div className="flex flex-col items-center justify-between gap-4">
-                    <div className="flex items-center space-x-2">
-                      {article.sources.map(
-                        (source, index) =>
-                          index < 3 && (
-                            <span
-                              key={index}
-                              className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded"
-                            >
-                              {source.name}
-                            </span>
-                          )
-                      )}
-                    </div>
-                    <button
-                      className="text-blue-600 bg-gray-200 text-sm font-medium hover:underline px-4 py-2 rounded-md cursor-pointer"
-                      onClick={() =>
-                        (window.location.href = `/full_coverage/${article.id}`)
-                      }
-                    >
-                      📰 Full Coverage
-                    </button>
-                  </div>
-                </div>
-              </div>
+              //Reusable NewsCard component
+              <NewsCard key={article.id} article={article} />
             ))}
           </div>
         )}

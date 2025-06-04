@@ -17,9 +17,10 @@ const Header = () => {
       router.push("/search");
     }
   };
-
+  const title = path.split("/").pop();
+  console.log("Current Path:", path);
   return (
-    <div>
+    <div className={`${path === "/search" ? "hidden" : ""}`}>
       <header className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12 md:h-16">
@@ -66,6 +67,9 @@ const Header = () => {
               >
                 <User className="w-4 h-4 mr-2" /> Profile
               </Button>
+            </div>
+            <div className="md:hidden items-center">
+              <h1 className="font-bold text-2xl">{title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}</h1>
             </div>
             <button className="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
               <Bell className="w-6 h-6" />
