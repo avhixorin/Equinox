@@ -8,8 +8,7 @@ import { article } from "@/types/types";
 import { BookmarkIcon, MessageSquare } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const FullCoverage = () => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +21,7 @@ const FullCoverage = () => {
   );
 
   const bookmarkSet = useMemo(() => new Set(userBookmarks), [userBookmarks]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (typeof parentId === "string") {
@@ -34,6 +34,7 @@ const FullCoverage = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentId]);
+
   const handleBookmark = (articleId: string | undefined) => {
     if (!articleId) return;
 
@@ -44,49 +45,54 @@ const FullCoverage = () => {
       dispatch(addBookmark(articleId));
     }
   };
+
   return (
-    <div className="min-h-screen">
-      <div className="bg-white fixed bottom-0 max-sm:bottom-14 left-0 w-full z-40 flex justify-center items-center">
+    <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-100 transition-colors">
+      {/* Bottom action bar */}
+      <div className="bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-700 fixed bottom-0 max-sm:bottom-12 left-0 w-full z-40 flex justify-center items-center">
         <div className="flex justify-evenly items-center py-2 w-full md:w-1/4">
           <Button
             variant="ghost"
             size="sm"
-            className="text-gray-600 cursor-pointer hover:text-gray-900"
+            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             onClick={() => (window.location.href = "#")}
           >
-            <MessageSquare className="w-8 h-8 scale-125 mr-2" />{" "}
+            <MessageSquare className="w-8 h-8 scale-125 mr-2" />
             {viewingArticle?.views}
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="text-gray-600 cursor-pointer hover:text-gray-900"
+            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             onClick={() => handleBookmark(viewingArticle?.id)}
           >
             <BookmarkIcon
               className={`w-8 h-8 scale-125 transition-colors ${
                 viewingArticle?.id && bookmarkSet.has(viewingArticle.id)
                   ? "text-blue-600 fill-blue-600"
-                  : "text-gray-600"
+                  : "text-gray-600 dark:text-gray-300"
               }`}
             />
           </Button>
         </div>
       </div>
 
+      {/* Main content */}
       <main className="w-full h-full mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         {loading ? (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Loading...</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+              Loading...
+            </h1>
           </div>
         ) : (
-          <div className=" w-full h-full flex flex-col items-center justify-center gap-4">
+          <div className="w-full h-full flex flex-col items-center justify-center gap-4">
             <div className="w-full flex justify-center items-center">
-              <h1 className="text-xl text-center md:text-3xl font-medium">
+              <h1 className="text-xl text-center md:text-3xl font-semibold text-gray-900 dark:text-white">
                 {viewingArticle?.title}
               </h1>
             </div>
-            <div className=" grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {viewingArticle?.sources.map((source) => (
                 <ArticleCard
                   key={source.id}

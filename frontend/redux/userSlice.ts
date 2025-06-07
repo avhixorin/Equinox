@@ -1,4 +1,4 @@
-import { User } from "@/types/types";
+import { Theme, User } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
@@ -11,7 +11,9 @@ const initialState: UserState = {
     email: "",
     profilePicture: "",
     bookmarks: [],
-    settings: {},
+    settings: {
+      theme: Theme.LIGHT,
+    },
   },
 };
 
@@ -21,6 +23,11 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+    },
+    setUserTheme: (state, action: PayloadAction<Theme>) => {
+      if (state.user) {
+        state.user.settings.theme = action.payload;
+      }
     },
     addBookmark: (state, action: PayloadAction<string>) => {
       if (state.user && !state.user.bookmarks.includes(action.payload)) {
@@ -38,6 +45,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, addBookmark, removeBookmark, clearUser } =
+export const { setUser, setUserTheme, addBookmark, removeBookmark, clearUser } =
   userSlice.actions;
 export default userSlice.reducer;

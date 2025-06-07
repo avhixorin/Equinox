@@ -2,6 +2,7 @@ import {
   Bot,
   Building,
   Building2,
+  CircleHelp,
   CircuitBoard,
   Clapperboard,
   Factory,
@@ -9,6 +10,9 @@ import {
   Home,
   Hospital,
   Landmark,
+  Lock,
+  LogOut,
+  Moon,
   Search,
   SquareChartGantt,
   Trophy,
@@ -138,3 +142,41 @@ export const searchCategories = [
       "https://images.pexels.com/photos/414860/pexels-photo-414860.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
 ];
+
+export const SettingOptions = [
+  {
+    name: "Edit Profile",
+    icon: <User className="w-4 h-4" />,
+    href: "/settings/edit-profile",
+  },
+  {
+    name: "Notifications",
+    icon: <Clapperboard className="w-4 h-4" />,
+    href: "/settings/notifications",
+  },
+  {
+    name: "Security",
+    icon: <Lock className="w-4 h-4" />,
+    href: "/settings/change-password",
+  },
+  {
+    name: "Help",
+    icon: <CircleHelp className="w-4 h-4" />,
+    href: "/settings/privacy",
+  },
+  {
+    name: "Account Management",
+    icon: <Trophy className="w-4 h-4" />,
+    href: "/settings/account-management",
+  },
+  {
+    name: "Dark Mode",
+    icon: <Moon className="w-4 h-4" />,
+    href: "/settings/help-support",
+  },
+  {
+    name: "Logout",
+    icon: <LogOut className="w-4 h-4" />,
+    href: "/logout",
+  }
+]
